@@ -28,9 +28,10 @@ namespace dtp6_contacts
                 commandLine = Input("> ").Split(' ');
                 if (commandLine[0] == "quit")
                 {
-                    // NYI!
+                    // NYI! safe quit
                     Console.WriteLine("Not yet implemented: safe quit");
                 }
+                // NYI: "list"
                 else if (commandLine[0] == "load")
                 {
                     Load();
@@ -60,10 +61,11 @@ namespace dtp6_contacts
                 string persname = Input("personal name: ");
                 string surname = Input("surname: ");
                 string phone = Input("phone: ");
+                // NYI: Create person here, and insert in phone list
             }
             else
             {
-                // NYI!
+                // NYI! new /person/
                 Console.WriteLine("Not yet implemented: new /person/");
             }
         }
@@ -141,7 +143,7 @@ namespace dtp6_contacts
             }
             else
             {
-                // NYI!
+                // NYI! save /file/
                 Console.WriteLine("Not yet implemented: save /file/");
             }
         }
