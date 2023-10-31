@@ -20,6 +20,18 @@ namespace dtp6_contacts
             return Console.ReadLine();
         }
 
+        static void PrintContactList()
+        {
+            for(int i = 0; i < contactList.Length; i++)
+            {
+                Person p = contactList[i];
+                if(p != null)
+                {
+                    Console.WriteLine($"{p.persname}, {p.surname}, {p.phone}, {p.address}, {p.birthdate}");
+                }
+            }
+        }
+
         static string[] commandLine;
         static string lastFileName;
         public static void Main(string[] args)
@@ -36,6 +48,10 @@ namespace dtp6_contacts
                     Console.WriteLine("Not yet implemented: safe quit");
                 }
                 // NYI: "list"
+                else if (commandLine[0] == "list")
+                {
+                    PrintContactList();
+                }
                 else if (commandLine[0] == "load")
                 {
                     if (commandLine.Length < 2)
@@ -99,7 +115,7 @@ namespace dtp6_contacts
                 string line;
                 while ((line = infile.ReadLine()) != null)
                 {
-                    Console.WriteLine(line);
+                    //Console.WriteLine(line);
                     string[] attrs = line.Split('|');
                     Person p = new Person();
                     p.persname = attrs[0];
