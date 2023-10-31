@@ -54,7 +54,7 @@ namespace dtp6_contacts
                 }
             } while (commandLine[0] != "quit");
         }
-        private static void New()
+        private static void New() // Lägger till ny person
         {
             if (commandLine.Length < 2)
             {
@@ -69,7 +69,7 @@ namespace dtp6_contacts
                 Console.WriteLine("Not yet implemented: new /person/");
             }
         }
-        private static void Load()
+        private static void Load() // Laddar in filen
         {
             if (commandLine.Length < 2)
             {
@@ -128,7 +128,7 @@ namespace dtp6_contacts
                 }
             }
         }
-        private static void Save()
+        private static void Save() // Sparar filen, dock trasig just nu, förstör filen
         {
             if (commandLine.Length < 2)
             {
@@ -147,7 +147,7 @@ namespace dtp6_contacts
                 Console.WriteLine("Not yet implemented: save /file/");
             }
         }
-        private static void Help()
+        private static void Help() // Hjälpkommandon
         {
             Console.WriteLine("Avaliable commands: ");
             Console.WriteLine("  delete       - emtpy the contact list");
