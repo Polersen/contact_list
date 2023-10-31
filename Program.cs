@@ -7,7 +7,11 @@ namespace dtp6_contacts
         static Person[] contactList = new Person[100];
         class Person
         {
-            public string persname, surname, phone, address, birthdate;
+            public string persname { get; set; }
+            public string surname { get; set; }
+            public string phone { get; set; }
+            public string address { get; set; }
+            public string birthdate { get; set; }
         }
 
         static string Input(string prompt)
@@ -22,7 +26,7 @@ namespace dtp6_contacts
         {
             lastFileName = "address.lis";
             Console.WriteLine("Hello and welcome to the contact list");
-            Help();
+            WriteHelp();
             do
             {
                 commandLine = Input("> ").Split(' ');
@@ -37,17 +41,27 @@ namespace dtp6_contacts
                     if (commandLine.Length < 2)
                     {
                         lastFileName = "address.lis";
-                        Load(lastFileName);
+                        ReadContactListFromFile(lastFileName);
                     }
                     else
                     {
                         lastFileName = commandLine[1];
-                        Load(lastFileName);
+                        ReadContactListFromFile(lastFileName);
                     }
                 }
                 else if (commandLine[0] == "save")
                 {
-                    Save();
+                    if (commandLine.Length < 2)
+                    {
+                        WriteContactListToFile(lastFileName);
+                    }
+                    else
+                    {
+                        // NYI! save /file/
+                        Console.WriteLine("Not yet implemented: save /file/");
+                        lastFileName = commandLine[1];
+                        WriteContactListToFile(lastFileName);
+                    }
                 }
                 else if (commandLine[0] == "new")
                 {
@@ -55,7 +69,7 @@ namespace dtp6_contacts
                 }
                 else if (commandLine[0] == "help")
                 {
-                    Help();
+                    WriteHelp();
                 }
                 else
                 {
@@ -78,7 +92,7 @@ namespace dtp6_contacts
                 Console.WriteLine("Not yet implemented: new /person/");
             }
         }
-        private static void Load(string last) // Laddar in filen
+        private static void ReadContactListFromFile(string lastFileName) // Laddar in filen
         {
             using (StreamReader infile = new StreamReader(lastFileName)) // FIXME: om filen inte finns!
             {
@@ -105,26 +119,18 @@ namespace dtp6_contacts
                 }
             }
         }
-        private static void Save() // Sparar filen, dock trasig just nu, förstör filen
+        private static void WriteContactListToFile(string lastFileName) // Skriver till filen, trasigt
         {
-            if (commandLine.Length < 2)
+            using (StreamWriter outfile = new StreamWriter(lastFileName))
             {
-                using (StreamWriter outfile = new StreamWriter(lastFileName))
+                foreach (Person p in contactList)
                 {
-                    foreach (Person p in contactList)
-                    {
-                        if (p != null)
-                            outfile.WriteLine($"{p.persname};{p.surname};{p.phone};{p.address};{p.birthdate}");
-                    }
+                    if (p != null)
+                        outfile.WriteLine($"{p.persname};{p.surname};{p.phone};{p.address};{p.birthdate}");
                 }
             }
-            else
-            {
-                // NYI! save /file/
-                Console.WriteLine("Not yet implemented: save /file/");
-            }
         }
-        private static void Help() // Hjälpkommandon
+        private static void WriteHelp() // Hjälpkommandon
         {
             Console.WriteLine("Avaliable commands: ");
             Console.WriteLine("  delete       - emtpy the contact list");
