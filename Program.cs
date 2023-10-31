@@ -34,7 +34,16 @@ namespace dtp6_contacts
                 // NYI: "list"
                 else if (commandLine[0] == "load")
                 {
-                    Load();
+                    if (commandLine.Length < 2)
+                    {
+                        lastFileName = "address.lis";
+                        Load(lastFileName);
+                    }
+                    else
+                    {
+                        lastFileName = commandLine[1];
+                        Load(lastFileName);
+                    }
                 }
                 else if (commandLine[0] == "save")
                 {
@@ -69,60 +78,28 @@ namespace dtp6_contacts
                 Console.WriteLine("Not yet implemented: new /person/");
             }
         }
-        private static void Load() // Laddar in filen
+        private static void Load(string last) // Laddar in filen
         {
-            if (commandLine.Length < 2)
+            using (StreamReader infile = new StreamReader(lastFileName)) // FIXME: om filen inte finns!
             {
-                lastFileName = "address.lis";
-                using (StreamReader infile = new StreamReader(lastFileName))
+                string line;
+                while ((line = infile.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = infile.ReadLine()) != null)
+                    Console.WriteLine(line);
+                    string[] attrs = line.Split('|');
+                    Person p = new Person();
+                    p.persname = attrs[0];
+                    p.surname = attrs[1];
+                    string[] phones = attrs[2].Split(';');
+                    p.phone = phones[0];
+                    string[] addresses = attrs[3].Split(';');
+                    p.address = addresses[0];
+                    for (int ix = 0; ix < contactList.Length; ix++)
                     {
-                        Console.WriteLine(line);
-                        string[] attrs = line.Split('|');
-                        Person p = new Person();
-                        p.persname = attrs[0];
-                        p.surname = attrs[1];
-                        string[] phones = attrs[2].Split(';');
-                        p.phone = phones[0];
-                        string[] addresses = attrs[3].Split(';');
-                        p.address = addresses[0];
-                        for (int ix = 0; ix < contactList.Length; ix++)
+                        if (contactList[ix] == null)
                         {
-                            if (contactList[ix] == null)
-                            {
-                                contactList[ix] = p;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                lastFileName = commandLine[1];
-                using (StreamReader infile = new StreamReader(lastFileName))
-                {
-                    string line;
-                    while ((line = infile.ReadLine()) != null)
-                    {
-                        Console.WriteLine(line);
-                        string[] attrs = line.Split('|');
-                        Person p = new Person();
-                        p.persname = attrs[0];
-                        p.surname = attrs[1];
-                        string[] phones = attrs[2].Split(';');
-                        p.phone = phones[0];
-                        string[] addresses = attrs[3].Split(';');
-                        p.address = addresses[0];
-                        for (int ix = 0; ix < contactList.Length; ix++)
-                        {
-                            if (contactList[ix] == null)
-                            {
-                                contactList[ix] = p;
-                                break;
-                            }
+                            contactList[ix] = p;
+                            break;
                         }
                     }
                 }
